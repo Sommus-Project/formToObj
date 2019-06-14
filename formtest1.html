@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    label {
+      align-items: center;
+      display: flex;
+      justify-content: flex-end;
+      width: 300px;
+    }
+
+    input {
+      margin: 5px;
+      padding: 10px 5px;
+      width: 200px;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin: 15px 205px 15px 10px;
+      width: auto;
+    }
+  </style>
+  <script>
+    function getFieldValues(rootEl) {
+      var values = {};
+      var els = rootEl.querySelectorAll('[name]');
+      els.forEach(
+        function (el) {
+          var validEl = true;
+          var key = el.getAttribute('name');
+          var elType = (el.getAttribute('type') || 'text').toLowerCase();
+          if (elType === 'checkbox') {
+            values[key] = el.checked;
+            if (el.checked && el.hasAttribute('value') && el.value) {
+              values[key] = el.value;
+            }
+          }
+          else {
+            if (elType === 'radio') {
+              validEl = el.checked;
+            }
+            if (validEl) {
+              if (values.hasOwnProperty(key)) {
+                if (!Array.isArray(values[key])) {
+                  values[key] = [values[key]];
+                }
+                values[key].push(el.value);
+              }
+              else {
+                values[key] = el.value;
+              }
+            }
+          }
+        }
+      );
+
+      return values;
+    }
+
+    function ael(el, event, cb) {
+      el.addEventListener(event, cb);
+      return () => {
+        el.removeEventListener(event, cb);
+      }
+    }
+
+    function objForm(form) {
+      return new Promise((resolve, reject) => {
+        const rel = ael(form, 'submit', (evt) => {
+          evt.preventDefault();
+          rel();
+          resolve(getFieldValues(form));
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <form id="f1">
+    <label>First Name: <input name="firstName" autofocus /></label>
+    <label>Last Name: <input name="lastName" /></label>
+    <label>Address 1: <input name="address" /></label>
+    <label>Address 2: <input name="address2" /></label>
+    <label>City: <input name="city" /></label>
+    <label>State: <input name="state" /></label>
+    <label>Zipcode: <input name="zipcode" /></label>
+    <label>Phone: <input name="phone" /></label>
+    <label>Enabled: <input name="enabled" type="checkbox" /></label>
+    <button>Submit</button>
+  </form>
+  <script>
+    function bindForm() {
+      objForm(document.querySelector('#f1')).then(
+        (data) => {
+          console.log(JSON.stringify(data,0,2));
+          bindForm();
+        }
+      );
+    }
+
+    bindForm();
+  </script>
+</body>
+</html>
