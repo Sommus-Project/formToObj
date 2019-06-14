@@ -1,0 +1,27 @@
+{
+  "name": "@sommus/form-to-obj",
+  "version": "0.1.1",
+  "description": "Convert values from an HTML form into an object",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sommus-Project/formToObj.git"
+  },
+  "keywords": [
+    "form",
+    "date",
+    "browser"
+  ],
+  "author": "Michael Collins <intervalia@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sommus-Project/formToObj/issues"
+  },
+  "homepage": "https://github.com/Sommus-Project/formToObj#readme"
+}
